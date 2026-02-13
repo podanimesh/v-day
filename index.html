@@ -1,45 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>For Juhi ❤️</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Mrs. Juhi ❤️</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-<!-- Envelope Screen -->
-<div id="screen1" class="screen active">
-    <div id="envelope">
-        <div class="flap"></div>
-        <div class="letter">For Juhi 💌</div>
+  <!-- Screen 1: Envelope Unlock -->
+  <div id="screen1" class="screen active">
+    <div class="card">
+      <div class="shine"></div>
+      <div class="badge">💖 A tiny surprise for Juhi</div>
+      <h1>Open your love letter</h1>
+
+      <div id="envelopeWrap">
+        <div id="envelope" aria-label="Open letter" role="button">
+          <div class="paper">For Juhi 💌</div>
+          <div class="flap"></div>
+          <div class="seal">❤️</div>
+        </div>
+
+        <p class="hint">Tap the envelope to Enter</p>
+      </div>
     </div>
-    <p>Tap to open</p>
-</div>
+  </div>
 
-<!-- Funny Page -->
-<div id="screen2" class="screen">
-    <h1 id="teaseText">Hi Bebaaaa 😘</h1>
-    <button id="nextBtn">Continue →</button>
-</div>
+  <!-- Screen 2: Tease -->
+  <div id="screen2" class="screen">
+    <div class="card">
+      <div class="shine"></div>
+      <div class="badge">😌 Babeee mode</div>
+      <h1 id="teaseText">Hi Bebaaa 😘</h1>
+      <h2>One small question coming…</h2>
+      <button class="btn" id="nextBtn">Continue →</button>
+      <p class="hint">P.S. You’re stuck with me.</p>
+    </div>
+  </div>
 
-<!-- Proposal Page -->
-<div id="screen3" class="screen">
-    <h1>Mrs Juhi 💕</h1>
-    <h2>Will you be my Valentine?</h2>
+  <!-- Screen 3: Valentine -->
+  <div id="screen3" class="screen">
+    <div class="card">
+      <div class="shine"></div>
+      <div class="badge">💘 Final boss</div>
+      <h1>Juhi 💕</h1>
+      <h2>Will you be my Valentine?</h2>
 
-    <div class="buttons">
+      <div class="buttons">
         <button id="yesBtn">YES 😍</button>
-        <button id="noBtn">NO 🙄</button>
+      </div>
+
+      <!-- NO button runs away (placed dynamically) -->
+      <button id="noBtn">NO 🙄</button>
+
+      <div id="result"></div>
+      <p class="hint">Try pressing NO… if you can 😈</p>
     </div>
+  </div>
 
-    <p id="result"></p>
-</div>
+  <audio id="bgMusic" preload="auto" loop>
+    <source src="music.mp3" type="audio/mpeg" />
+  </audio>
 
-<audio id="bgMusic" preload="auto" loop>
-    <source src="music.mp3" type="audio/mpeg">
-</audio>
-
-<script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
