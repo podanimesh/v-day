@@ -1,149 +1,75 @@
-// --- Helpers ---
-function $(id) { return document.getElementById(id); }
-function rand(min, max) { return Math.random() * (max - min) + min; }
+const screen1 = document.getElementById("screen1");
+const screen2 = document.getElementById("screen2");
+const screen3 = document.getElementById("screen3");
+const envelope = document.getElementById("envelope");
 
-// --- Hearts background ---
-const heartsWrap = document.querySelector(".hearts");
+const teaseText = document.getElementById("teaseText");
+const nextBtn = document.getElementById("nextBtn");
+const yesBtn = document.getElementById("yesBtn");
+const noBtn = document.getElementById("noBtn");
+const result = document.getElementById("result");
+const music = document.getElementById("bgMusic");
 
-function spawnHearts(count = 18) {
-  for (let i = 0; i < count; i++) {
-    const h = document.createElement("div");
-    h.className = "heart";
-    h.style.left = `${Math.floor(rand(0, 100))}%`;
-    h.style.animationDuration = `${rand(7, 14).toFixed(2)}s`;
-    h.style.animationDelay = `${rand(0, 6).toFixed(2)}s`;
-    h.style.opacity = `${rand(0.10, 0.22).toFixed(2)}`;
-    const size = rand(10, 18);
-    h.style.width = `${size}px`;
-    h.style.height = `${size}px`;
-    h.style.background = `rgba(255, ${Math.floor(rand(70,140))}, ${Math.floor(rand(160,220))}, 0.9)`;
-    heartsWrap.appendChild(h);
-  }
-}
-spawnHearts(22);
+/* Unlock audio + open envelope */
+envelope.addEventListener("click", openLetter);
+envelope.addEventListener("touchstart", openLetter);
 
-// --- Screens ---
-const landing = $("screen-landing");
-const main = $("screen-main");
-const enterBtn = $("enterBtn");
+function openLetter(){
+    envelope.classList.add("open");
 
-const bgm = $("bgm");
-const muteBtn = $("muteBtn");
+    // audio now allowed
+    music.currentTime = 0;
+    music.play().catch(()=>{});
 
-function showMain() {
-  landing.classList.remove("active");
-  main.classList.add("active");
+    setTimeout(()=>{
+        screen1.classList.remove("active");
+        screen2.classList.add("active");
+        startTeasing();
+    }, 900);
 }
 
-async function playMusic() {
-  try {
-    await bgm.play();
-    muteBtn.textContent = "🔊";
-  } catch (e) {
-    // If browser blocks it (shouldn't after click), ignore gracefully.
-    muteBtn.textContent = "🔇";
-  }
-}
+/* Teasing */
 
-enterBtn.addEventListener("click", async () => {
-  showMain();
-  await playMusic();
-});
-
-// Mute toggle
-muteBtn.addEventListener("click", async () => {
-  if (bgm.paused) {
-    await playMusic();
-  } else {
-    bgm.pause();
-    muteBtn.textContent = "🔇";
-  }
-});
-
-// Scroll hint button (landing)
-const scrollBtn = $("scrollBtn");
-if (scrollBtn) {
-  scrollBtn.addEventListener("click", () => {
-    // when on main, scroll is not needed; keep as cute interaction
-    $("status").textContent = "Okay okay… continue 😌";
-  });
-}
-
-// --- Valentine question logic ---
-const arena = $("arena");
-const yesBtn = $("yesBtn");
-const noBtn = $("noBtn");
-const status = $("status");
-const celebrate = $("celebrate");
-
-let noAttempts = 0;
-
-const funnyLines = [
-  "We are already married!!!!!!!",
-  "babeeeeeeee",
-  "No button says: *absolutely not* 💨",
-  "No is not an option😌",
-  "Sorry you have already made a choice",
-  "Try again… but like… don’t 😄"
+const lines = [
+    "Hi Babeee 😘",
+    "Aaj kam Bhonda lag rahi ho ❤️",
+    "But still Bhonda 😌",
+    "Maar padingla loading...",
+    "Spanking prepared 😏",
+    "Okay serious now...",
+    "I love you ❤️"
 ];
 
-function moveNoButton() {
-  // Keep within the arena bounds
-  const rect = arena.getBoundingClientRect();
-  const btnRect = noBtn.getBoundingClientRect();
+let index = 0;
 
-  const padding = 12;
-  const maxX = rect.width - btnRect.width - padding;
-  const maxY = rect.height - btnRect.height - padding;
-
-  const x = rand(padding, Math.max(padding, maxX));
-  const y = rand(padding, Math.max(padding, maxY));
-
-  noBtn.style.left = `${x}px`;
-  noBtn.style.top = `${y}px`;
-  noBtn.style.right = "auto";
-  noBtn.style.transform = "none";
+function startTeasing(){
+    setInterval(()=>{
+        index++;
+        if(index < lines.length){
+            teaseText.innerText = lines[index];
+        }
+    }, 2000);
 }
 
-function updateStatusForNo() {
-  noAttempts++;
-  const line = funnyLines[Math.min(funnyLines.length - 1, noAttempts - 1)];
-  status.textContent = line;
+nextBtn.onclick = () => {
+    screen2.classList.remove("active");
+    screen3.classList.add("active");
+};
 
-  // Make it progressively harder
-  const scale = Math.max(0.82, 1 - noAttempts * 0.03);
-  noBtn.style.transform = `scale(${scale})`;
+/* Runaway NO */
+
+function moveNo(){
+    const x = Math.random() * (window.innerWidth - 120);
+    const y = Math.random() * (window.innerHeight - 80);
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
 }
 
-// Run away on hover AND click (mobile tap)
-noBtn.addEventListener("mouseenter", () => {
-  moveNoButton();
-  updateStatusForNo();
-});
-noBtn.addEventListener("click", () => {
-  moveNoButton();
-  updateStatusForNo();
-});
+noBtn.addEventListener("touchstart", moveNo);
+noBtn.addEventListener("mouseover", moveNo);
 
-// YES = celebration + more hearts burst
-yesBtn.addEventListener("click", () => {
-  status.textContent = "Correct answer ✅";
-  celebrate.hidden = false;
+/* YES */
 
-  // Quick heart “burst”
-  for (let i = 0; i < 14; i++) {
-    const h = document.createElement("div");
-    h.className = "heart";
-    h.style.left = `${Math.floor(rand(0, 100))}%`;
-    h.style.animationDuration = `${rand(4.5, 7).toFixed(2)}s`;
-    h.style.animationDelay = `${rand(0, 0.8).toFixed(2)}s`;
-    h.style.opacity = `${rand(0.18, 0.30).toFixed(2)}`;
-    const size = rand(12, 22);
-    h.style.width = `${size}px`;
-    h.style.height = `${size}px`;
-    heartsWrap.appendChild(h);
-  }
-
-  // Remove the NO button so it can’t be “reconsidered”
-  noBtn.style.display = "none";
-});
+yesBtn.onclick = () => {
+    result.innerText = "YAYYY ❤️ I knew it Babeee 😌";
+};
