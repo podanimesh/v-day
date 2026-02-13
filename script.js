@@ -1,4 +1,4 @@
-/* ---------- Background Hearts (behind everything) ---------- */
+/* ---------- Background Hearts ---------- */
 const heartsLayer = document.createElement("div");
 heartsLayer.id = "hearts";
 document.body.appendChild(heartsLayer);
@@ -24,85 +24,52 @@ function spawnHeart(){
 }
 setInterval(spawnHeart, 220);
 
-/* ---------- Screens ---------- */
+/* ---------- Elements ---------- */
 const screen1 = document.getElementById("screen1");
-const screen2 = document.getElementById("screen2");
 const screen3 = document.getElementById("screen3");
 
 const envelope = document.getElementById("envelope");
-const teaseText = document.getElementById("teaseText");
-const teaseSub = document.getElementById("teaseSub");
-
 const yesBtn = document.getElementById("yesBtn");
 const noBtn = document.getElementById("noBtn");
 const result = document.getElementById("result");
 const music = document.getElementById("bgMusic");
 
-function goTo(from, to){
-  from.classList.remove("active");
-  to.classList.add("active");
-
-  if (to === screen3) {
-    // place buttons after layout is actually visible
-    setTimeout(() => placeNoNearYes(), 50);
-  }
-}
-
-/* ---------- Teasing Lines (slower so it doesn't feel like a video) ---------- */
-const lines = [
+/* ---------- Teasing lines shown when she tries NO ---------- */
+const noLines = [
   "Hi Babeee 😘",
+  "Acha NO? 😌",
   "Today I will not irritate you…",
   "Okay small irritation only 😌",
-  "Bhonda",
+  "Sometimes you act Bhonda",
   "But only I am allowed to say that 😤",
   "Maaar Padingla incoming...",
   "Wait wait not that type 😆",
-  "Serious now...",
-  "I love you ❤️"
+  "Okay okay… serious now...",
+  "Just press YES ❤️"
 ];
 
-let idx = 0;
-let teasingTimer = null;
+let noIndex = -1;
 
-function startTeasing(){
-  if (teasingTimer) return;
+/* ---------- Screen transition ---------- */
+function goToProposal(){
+  screen1.classList.remove("active");
+  screen3.classList.add("active");
 
-  idx = 0;
-  teaseText.textContent = lines[idx];
-  if (teaseSub) teaseSub.textContent = " ";
-
-  teasingTimer = setInterval(() => {
-    idx++;
-
-    if (idx < lines.length) {
-      teaseText.textContent = lines[idx];
-    } else {
-      clearInterval(teasingTimer);
-      teasingTimer = null;
-
-      // Pause before the proposal screen (so buttons don't feel abrupt)
-      setTimeout(() => {
-        goTo(screen2, screen3);
-      }, 1800);
-    }
-  }, 2300);
+  // place NO nicely near YES after layout is visible
+  setTimeout(placeNoNearYes, 60);
 }
 
-/* ---------- iPhone Audio Unlock (Tap Envelope) ---------- */
+/* ---------- iPhone Audio Unlock ---------- */
 function openLetter(){
   envelope.classList.add("open");
 
   music.currentTime = 0;
-  music.play().catch(() => {});
+  music.play().catch(()=>{});
 
-  setTimeout(() => {
-    goTo(screen1, screen2);
-    startTeasing();
-  }, 850);
+  setTimeout(goToProposal, 850);
 }
-
 envelope.addEventListener("click", openLetter);
-envelope.addEventListener("touchstart", openLetter, { passive: true });
+envelope.addEventListener("touchstart", openLetter, { passive:true });
 
 /* ---------- NO Button Placement & Escape ---------- */
 function placeNoNearYes(){
@@ -127,28 +94,42 @@ function moveNo(){
   noBtn.style.top = y + "px";
 }
 
+/* When she tries clicking NO: run away + show next line */
+function handleNoAttempt(e){
+  if (e) e.preventDefault();
+
+  moveNo();
+
+  noIndex++;
+  if (noIndex >= noLines.length) noIndex = noLines.length - 1; // stick to last line
+
+  result.innerHTML = `<div style="margin-top:8px;">${noLines[noIndex]}</div>`;
+}
+
+/* desktop + mobile */
 noBtn.addEventListener("mouseover", moveNo);
-noBtn.addEventListener("touchstart", (e) => { e.preventDefault(); moveNo(); }, { passive: false });
+noBtn.addEventListener("click", handleNoAttempt);
+noBtn.addEventListener("touchstart", handleNoAttempt, { passive:false });
 
 window.addEventListener("resize", () => {
   if (screen3.classList.contains("active")) placeNoNearYes();
 });
 
-/* ---------- Confetti (no libraries) ---------- */
+/* ---------- Confetti ---------- */
 function confettiBurst(){
   const n = 110;
   for (let i = 0; i < n; i++) {
     const s = document.createElement("div");
-    s.style.position = "fixed";
-    s.style.left = (window.innerWidth / 2) + "px";
-    s.style.top = (window.innerHeight / 2) + "px";
-    s.style.width = (6 + Math.random() * 6) + "px";
-    s.style.height = (8 + Math.random() * 10) + "px";
-    s.style.borderRadius = "3px";
-    s.style.background = "rgba(255,255,255," + (0.55 + Math.random() * 0.4) + ")";
-    s.style.pointerEvents = "none";
-    s.style.boxShadow = "0 12px 24px rgba(0,0,0,0.18)";
-    s.style.zIndex = "100";
+    s.style.position="fixed";
+    s.style.left=(window.innerWidth/2)+"px";
+    s.style.top=(window.innerHeight/2)+"px";
+    s.style.width=(6+Math.random()*6)+"px";
+    s.style.height=(8+Math.random()*10)+"px";
+    s.style.borderRadius="3px";
+    s.style.background="rgba(255,255,255,"+(0.55+Math.random()*0.4)+")";
+    s.style.pointerEvents="none";
+    s.style.boxShadow="0 12px 24px rgba(0,0,0,0.18)";
+    s.style.zIndex="100";
     document.body.appendChild(s);
 
     const angle = Math.random() * Math.PI * 2;
@@ -158,17 +139,17 @@ function confettiBurst(){
 
     s.animate(
       [
-        { transform: `translate(0,0) rotate(0deg)`, opacity: 1 },
-        { transform: `translate(${dx}px, ${dy}px) rotate(${Math.random() * 720}deg)`, opacity: 0 }
+        { transform:`translate(0,0) rotate(0deg)`, opacity:1 },
+        { transform:`translate(${dx}px, ${dy}px) rotate(${Math.random()*720}deg)`, opacity:0 }
       ],
-      { duration: 1200 + Math.random() * 900, easing: "cubic-bezier(.2,.7,.2,1)" }
+      { duration: 1200 + Math.random()*900, easing:"cubic-bezier(.2,.7,.2,1)" }
     );
 
-    setTimeout(() => s.remove(), 2200);
+    setTimeout(()=> s.remove(), 2200);
   }
 }
 
-/* ---------- YES Result ---------- */
+/* ---------- YES ---------- */
 yesBtn.addEventListener("click", () => {
   confettiBurst();
   if (navigator.vibrate) navigator.vibrate([200,100,200,100,400]);
