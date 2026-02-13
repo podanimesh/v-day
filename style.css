@@ -1,0 +1,192 @@
+:root{
+  --bg: #07070a;
+  --card: rgba(255,255,255,0.07);
+  --border: rgba(255,255,255,0.12);
+  --text: rgba(255,255,255,0.92);
+  --muted: rgba(255,255,255,0.62);
+  --pink: rgba(255, 80, 160, 0.92);
+  --pink2: rgba(255, 110, 200, 0.75);
+}
+
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
+body{
+  margin:0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  background:
+    radial-gradient(900px 520px at 50% 0%, rgba(255,80,160,0.25), transparent 60%),
+    radial-gradient(900px 520px at 50% 100%, rgba(120,80,255,0.18), transparent 60%),
+    var(--bg);
+  color: var(--text);
+  overflow:hidden;
+}
+
+/* Screens */
+.screen{
+  position: fixed;
+  inset: 0;
+  display: none;
+  place-items: center;
+  padding: 20px;
+}
+.screen.active{ display:grid; }
+
+/* Card */
+.card{
+  width: min(720px, 92vw);
+  border: 1px solid var(--border);
+  background: var(--card);
+  border-radius: 24px;
+  padding: 22px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 60px rgba(255,80,160,0.15);
+}
+.card.center{ text-align:center; }
+
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap: 8px;
+  font-size: 13px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.78);
+}
+
+h1{
+  margin: 14px 0 6px;
+  font-size: clamp(28px, 4vw, 44px);
+  letter-spacing: -0.02em;
+}
+h2{
+  margin: 16px 0 8px;
+  font-size: clamp(22px, 3.2vw, 34px);
+  letter-spacing: -0.02em;
+}
+.muted{ color: var(--muted); margin: 0; line-height: 1.6; }
+.tiny{ font-size: 12px; margin-top: 10px; }
+
+.topline{
+  display:flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn{
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.06);
+  color: var(--text);
+  border-radius: 14px;
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: transform .12s ease, background .2s ease, border-color .2s ease;
+  user-select:none;
+}
+.btn:hover{ background: rgba(255,255,255,0.10); }
+.btn:active{ transform: translateY(1px) scale(0.99); }
+
+.primary{
+  background: rgba(255, 80, 160, 0.22);
+  border-color: rgba(255, 80, 160, 0.35);
+}
+.primary:hover{ background: rgba(255, 80, 160, 0.30); }
+
+.danger{
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(255,255,255,0.18);
+}
+.big{ padding: 14px 18px; font-size: 16px; }
+
+.question{ text-align:center; }
+
+/* Arena for buttons */
+.arena{
+  margin-top: 16px;
+  height: 240px;
+  border-radius: 18px;
+  border: 1px dashed rgba(255,255,255,0.18);
+  background: rgba(0,0,0,0.18);
+  position: relative;
+  overflow: hidden;
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 12px;
+}
+#noBtn{
+  position: absolute; /* to allow running away */
+  right: 22%;
+  top: 52%;
+  transform: translateY(-50%);
+}
+#yesBtn{
+  position: absolute;
+  left: 22%;
+  top: 52%;
+  transform: translateY(-50%);
+}
+
+/* Celebrate section */
+.celebrate{
+  margin-top: 16px;
+  text-align:center;
+  border-radius: 18px;
+  border: 1px solid rgba(255,80,160,0.25);
+  background: rgba(255,80,160,0.10);
+  padding: 16px;
+}
+.celebrate h3{ margin: 0 0 6px; font-size: 22px; }
+.miniRow{ display:flex; gap: 10px; justify-content:center; margin-top: 12px; }
+.pill{
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.06);
+  border-radius: 999px;
+  padding: 8px 10px;
+}
+
+/* Floating hearts background */
+.hearts{
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 0.9;
+}
+
+.heart{
+  position:absolute;
+  width: 14px;
+  height: 14px;
+  transform: rotate(45deg);
+  background: var(--pink2);
+  filter: blur(0.2px);
+  animation: floatUp linear infinite;
+  opacity: 0.16;
+}
+.heart::before,
+.heart::after{
+  content:"";
+  position:absolute;
+  width: 14px;
+  height: 14px;
+  background: inherit;
+  border-radius: 50%;
+}
+.heart::before{ left: -7px; top: 0; }
+.heart::after{ left: 0; top: -7px; }
+
+@keyframes floatUp{
+  from{ transform: translateY(110vh) rotate(45deg); }
+  to{ transform: translateY(-20vh) rotate(45deg); }
+}
+
+/* Small screen tweaks */
+@media (max-width: 520px){
+  .arena{ height: 260px; }
+  #yesBtn{ left: 14%; }
+  #noBtn{ right: 14%; }
+}
