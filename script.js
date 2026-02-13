@@ -74,25 +74,54 @@ envelope.addEventListener("touchstart", openLetter, { passive:true });
 /* ---------- NO Button Placement & Escape ---------- */
 function placeNoNearYes(){
   const yesRect = yesBtn.getBoundingClientRect();
-  if (!yesRect.width || !yesRect.height) {
+  if (!yesRect.width) {
     setTimeout(placeNoNearYes, 120);
     return;
   }
 
-  const x = Math.min(window.innerWidth - 160, Math.max(12, yesRect.right + 12));
-  const y = Math.min(window.innerHeight - 110, Math.max(12, yesRect.top));
+  const area = getSafeArea();
+
+  let x = yesRect.right + 10;
+  let y = yesRect.top;
+
+  if (x > area.maxX) x = area.maxX;
+  if (y > area.maxY) y = area.maxY;
+  if (y < area.minY) y = area.minY;
+
   noBtn.style.left = x + "px";
   noBtn.style.top = y + "px";
   noBtn.style.visibility = "visible";
 }
 
+
+function getSafeArea() {
+  const safeTop = 20;                     // notch buffer
+  const safeBottom = 90;                  // home bar buffer
+  const safeSide = 16;
+
+  const width = document.documentElement.clientWidth;
+  const height = window.visualViewport
+    ? window.visualViewport.height
+    : window.innerHeight;
+
+  return {
+    minX: safeSide,
+    maxX: width - 150 - safeSide,
+    minY: safeTop,
+    maxY: height - 120 - safeBottom
+  };
+}
+
 function moveNo(){
-  const pad = 12;
-  const x = pad + Math.random() * (window.innerWidth - 180 - pad);
-  const y = pad + Math.random() * (window.innerHeight - 130 - pad);
+  const area = getSafeArea();
+
+  const x = area.minX + Math.random() * (area.maxX - area.minX);
+  const y = area.minY + Math.random() * (area.maxY - area.minY);
+
   noBtn.style.left = x + "px";
   noBtn.style.top = y + "px";
 }
+
 
 /* When she tries clicking NO: run away + show next line */
 function handleNoAttempt(e){
