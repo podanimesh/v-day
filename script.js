@@ -79,11 +79,11 @@ const celebrate = $("celebrate");
 let noAttempts = 0;
 
 const funnyLines = [
-  "Nice try 😏",
+  "We are already married!!!!!!!",
+  "babeeeeeeee",
   "No button says: *absolutely not* 💨",
-  "Hahahaha nope 😌",
-  "You can’t break my heart (literally) 💔",
-  "The universe said YES 🌌",
+  "No is not an option😌",
+  "Sorry you have already made a choice",
   "Try again… but like… don’t 😄"
 ];
 
