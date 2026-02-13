@@ -1,4 +1,4 @@
-/* ---------- Background Hearts ---------- */
+/* ---------- Background Hearts (behind everything) ---------- */
 const heartsLayer = document.createElement("div");
 heartsLayer.id = "hearts";
 document.body.appendChild(heartsLayer);
@@ -9,7 +9,7 @@ function spawnHeart(){
 
   const left = Math.random() * 100;
   const size = 10 + Math.random() * 18;
-  const dur = 4 + Math.random() * 4;
+  const dur = 5 + Math.random() * 5;
   const delay = Math.random() * 0.4;
 
   h.style.left = left + "vw";
@@ -22,7 +22,7 @@ function spawnHeart(){
   heartsLayer.appendChild(h);
   setTimeout(() => h.remove(), (dur + delay) * 1000);
 }
-setInterval(spawnHeart, 180);
+setInterval(spawnHeart, 220);
 
 /* ---------- Screens ---------- */
 const screen1 = document.getElementById("screen1");
@@ -43,16 +43,17 @@ function goTo(from, to){
   to.classList.add("active");
 
   if (to === screen3) {
-    requestAnimationFrame(() => placeNoNearYes());
+    // place buttons after layout is actually visible
+    setTimeout(() => placeNoNearYes(), 50);
   }
 }
 
-/* ---------- Teasing Lines (your personalization) ---------- */
+/* ---------- Teasing Lines (slower so it doesn't feel like a video) ---------- */
 const lines = [
   "Hi Babeee 😘",
   "Today I will not irritate you…",
   "Okay small irritation only 😌",
-  "Bhondaaa",
+  "Bhonda",
   "But only I am allowed to say that 😤",
   "Maaar Padingla incoming...",
   "Wait wait not that type 😆",
@@ -68,7 +69,7 @@ function startTeasing(){
 
   idx = 0;
   teaseText.textContent = lines[idx];
-  teaseSub.textContent = " ";
+  if (teaseSub) teaseSub.textContent = " ";
 
   teasingTimer = setInterval(() => {
     idx++;
@@ -79,19 +80,18 @@ function startTeasing(){
       clearInterval(teasingTimer);
       teasingTimer = null;
 
-      // small dramatic pause then move to proposal
+      // Pause before the proposal screen (so buttons don't feel abrupt)
       setTimeout(() => {
         goTo(screen2, screen3);
-      }, 1200);
+      }, 1800);
     }
-  }, 1900);
+  }, 2300);
 }
 
 /* ---------- iPhone Audio Unlock (Tap Envelope) ---------- */
 function openLetter(){
   envelope.classList.add("open");
 
-  // iOS: audio allowed after a real tap/click gesture
   music.currentTime = 0;
   music.play().catch(() => {});
 
@@ -107,23 +107,22 @@ envelope.addEventListener("touchstart", openLetter, { passive: true });
 /* ---------- NO Button Placement & Escape ---------- */
 function placeNoNearYes(){
   const yesRect = yesBtn.getBoundingClientRect();
-
-  // If screen3 isn't visible yet, retry once
   if (!yesRect.width || !yesRect.height) {
-    setTimeout(placeNoNearYes, 80);
+    setTimeout(placeNoNearYes, 120);
     return;
   }
 
-  const x = Math.min(window.innerWidth - 140, Math.max(12, yesRect.right + 12));
-  const y = Math.min(window.innerHeight - 90, Math.max(12, yesRect.top));
+  const x = Math.min(window.innerWidth - 160, Math.max(12, yesRect.right + 12));
+  const y = Math.min(window.innerHeight - 110, Math.max(12, yesRect.top));
   noBtn.style.left = x + "px";
   noBtn.style.top = y + "px";
+  noBtn.style.visibility = "visible";
 }
 
 function moveNo(){
   const pad = 12;
-  const x = pad + Math.random() * (window.innerWidth - 160 - pad);
-  const y = pad + Math.random() * (window.innerHeight - 110 - pad);
+  const x = pad + Math.random() * (window.innerWidth - 180 - pad);
+  const y = pad + Math.random() * (window.innerHeight - 130 - pad);
   noBtn.style.left = x + "px";
   noBtn.style.top = y + "px";
 }
@@ -172,7 +171,6 @@ function confettiBurst(){
 /* ---------- YES Result ---------- */
 yesBtn.addEventListener("click", () => {
   confettiBurst();
-
   if (navigator.vibrate) navigator.vibrate([200,100,200,100,400]);
 
   result.innerHTML = `
