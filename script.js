@@ -53,7 +53,7 @@ const lines = [
   "Hi Babeee 😘",
   "Today I will not irritate you…",
   "Okay small irritation only 😌",
-  "Sometimes you act Bhonda",
+  "You are a Bhonda",
   "But only I am allowed to say that 😤",
   "Maaar Padingla incoming...",
   "Wait wait not that type 😆",
