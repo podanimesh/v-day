@@ -2,27 +2,30 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>For Juhi ❤️</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- Landing Screen -->
+<!-- Envelope Screen -->
 <div id="screen1" class="screen active">
-    <h1 class="enter-text">Click to enter ❤️</h1>
+    <div id="envelope">
+        <div class="flap"></div>
+        <div class="letter">For Juhi 💌</div>
+    </div>
+    <p>Tap to open</p>
 </div>
 
 <!-- Funny Page -->
 <div id="screen2" class="screen">
     <h1 id="teaseText">Hi Bebaaaa 😘</h1>
-    <p id="subText">Welcome to your surprise</p>
-
     <button id="nextBtn">Continue →</button>
 </div>
 
 <!-- Proposal Page -->
 <div id="screen3" class="screen">
-    <h1>Juhi 💕</h1>
+    <h1>Mrs Juhi 💕</h1>
     <h2>Will you be my Valentine?</h2>
 
     <div class="buttons">
@@ -33,7 +36,7 @@
     <p id="result"></p>
 </div>
 
-<audio id="bgMusic" loop>
+<audio id="bgMusic" preload="auto" loop>
     <source src="music.mp3" type="audio/mpeg">
 </audio>
 
