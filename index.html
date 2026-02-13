@@ -3,39 +3,35 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Mrs. Juhi ❤️</title>
+  <title>For Juhi ❤️</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <!-- Screen 1: Envelope Unlock -->
+  <!-- Screen 1: Envelope (tap to unlock audio) -->
   <div id="screen1" class="screen active">
     <div class="card">
       <div class="shine"></div>
-      <div class="badge">💖 A tiny surprise for Juhi</div>
-      <h1>Open your love letter</h1>
+      <div class="badge">💌 For Mrs Juhi</div>
+      <h1>Kholo isko jaldi se</h1>
 
       <div id="envelopeWrap">
         <div id="envelope" aria-label="Open letter" role="button">
-          <div class="paper">For Juhi 💌</div>
+          <div class="paper">Juhi 💖</div>
           <div class="flap"></div>
           <div class="seal">❤️</div>
         </div>
-
-        <p class="hint">Tap the envelope to Enter</p>
       </div>
     </div>
   </div>
 
-  <!-- Screen 2: Tease -->
+  <!-- Screen 2: Teasing (auto-advances) -->
   <div id="screen2" class="screen">
     <div class="card">
       <div class="shine"></div>
       <div class="badge">😌 Babeee mode</div>
-      <h1 id="teaseText">Hi Bebaaa 😘</h1>
-      <h2>One small question coming…</h2>
-      <button class="btn" id="nextBtn">Continue →</button>
-      <p class="hint">P.S. You’re stuck with me.</p>
+      <h1 id="teaseText">Hi Bebaaaa 😘</h1>
+      <h2 id="teaseSub">One small thing…</h2>
     </div>
   </div>
 
@@ -43,15 +39,15 @@
   <div id="screen3" class="screen">
     <div class="card">
       <div class="shine"></div>
-      <div class="badge">💘 Final boss</div>
-      <h1>Juhi 💕</h1>
+      <div class="badge">💘</div>
+      <h1>Meri Biwi Saheba 💕</h1>
       <h2>Will you be my Valentine?</h2>
 
       <div class="buttons">
         <button id="yesBtn">YES 😍</button>
       </div>
 
-      <!-- NO button runs away (placed dynamically) -->
+      <!-- NO button runs away -->
       <button id="noBtn">NO 🙄</button>
 
       <div id="result"></div>
