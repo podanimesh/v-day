@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>💘 Valentine</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Floating hearts background -->
+  <div class="hearts" aria-hidden="true"></div>
+
+  <!-- Landing Screen -->
+  <section id="screen-landing" class="screen active">
+    <div class="card center">
+      <div class="badge">💖 a tiny surprise</div>
+      <h1>Click to enter</h1>
+      <p class="muted">No spoilers. Just vibes.</p>
+      <button id="enterBtn" class="btn primary" type="button">Enter 💘</button>
+      <p class="tiny muted">(Music starts after you click)</p>
+    </div>
+  </section>
+
+  <!-- Main Screen -->
+  <section id="screen-main" class="screen">
+    <div class="card">
+      <div class="topline">
+        <span class="badge">🎶 romantic-but-funny mode</span>
+        <button id="muteBtn" class="btn" type="button" aria-label="Toggle sound">🔊</button>
+      </div>
+
+      <h2 class="question">Will you be my Valentine? 💞</h2>
+      <p id="status" class="muted">Choose wisely…</p>
+
+      <div class="arena" id="arena">
+        <button id="yesBtn" class="btn primary big" type="button">Yes 😍</button>
+        <button id="noBtn" class="btn danger big" type="button">No 😏</button>
+      </div>
+
+      <div id="celebrate" class="celebrate" hidden>
+        <h3>YAYYYYY 💘</h3>
+        <p class="muted">Best decision you’ve made today 😌</p>
+        <div class="miniRow">
+          <span class="pill">🥰</span>
+          <span class="pill">🍫</span>
+          <span class="pill">🌹</span>
+          <span class="pill">🎬</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Audio (must be triggered by user click) -->
+  <audio id="bgm" src="assets/music.mp3" loop preload="auto"></audio>
+
+  <script src="script.js"></script>
+</body>
+</html>
